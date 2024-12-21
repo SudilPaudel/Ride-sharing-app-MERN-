@@ -73,7 +73,7 @@ The request body must be a JSON object containing the following fields:
   }
   ```
 
-  
+
   # User Login Endpoint
 
   ## POST /user/login
@@ -146,3 +146,89 @@ The request body must be a JSON object containing the following fields:
       "msg": "Internal Server Error"
     }
     ```
+
+# User Profile Endpoint
+
+## GET /user/profile
+
+### Description
+This endpoint is used to get the profile of the logged-in user.
+
+### Responses
+
+#### Success
+- **Status Code**: 200
+- **Body**:
+  ```json
+  {
+    "Result": {
+      "User_Info": {
+        "_id": "user_id",
+        "fullName": {
+          "firstName": "John",
+          "lastName": "Doe"
+        },
+        "email": "john.doe@example.com",
+        // ...other user fields...
+      }
+    },
+    "msg": "Your Profile",
+    "meta": null
+  }
+  ```
+
+#### Unauthorized
+- **Status Code**: 401
+- **Body**:
+  ```json
+  {
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Server Error
+- **Status Code**: 500
+- **Body**:
+  ```json
+  {
+    "msg": "Internal Server Error"
+  }
+  ```
+
+# User Logout Endpoint
+
+## GET /user/logout
+
+### Description
+This endpoint is used to log out the logged-in user.
+
+### Responses
+
+#### Success
+- **Status Code**: 200
+- **Body**:
+  ```json
+  {
+    "Result": null,
+    "msg": "Successfully Logged Out",
+    "meta": null
+  }
+  ```
+
+#### Unauthorized
+- **Status Code**: 401
+- **Body**:
+  ```json
+  {
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Server Error
+- **Status Code**: 500
+- **Body**:
+  ```json
+  {
+    "msg": "Internal Server Error"
+  }
+  ```
