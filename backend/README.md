@@ -324,3 +324,167 @@ This endpoint is used to log out the logged-in user.
       "msg": "Internal Server Error"
     }
     ```
+
+
+# Captain Login Endpoint
+
+## POST /captain/login
+
+### Description
+This endpoint is used to log in an existing captain.
+
+### Request Body
+The request body must be a JSON object containing the following fields:
+- `email`: A valid email address (required)
+- `password`: A string with at least 6 characters (required)
+
+### Example Request
+```json
+{
+  "email": "captain@example.com",
+  "password": "password123"
+}
+```
+
+### Responses
+
+#### Success
+- **Status Code**: 200
+- **Body**:
+  ```json
+  {
+    "Result": {
+      "Captain_Info": {
+        "_id": "captain_id",
+        "fullName": {
+          "firstName": "John",
+          "lastName": "Doe"
+        },
+        "email": "captain@example.com",
+        // ...other captain fields...
+      },
+      "token": "jwt_token"
+    },
+    "msg": "Successfully Logged In",
+    "meta": null
+  }
+  ```
+
+#### Validation Error
+- **Status Code**: 400
+- **Body**:
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Error message",
+        "param": "field_name",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+#### Unauthorized
+- **Status Code**: 401
+- **Body**:
+  ```json
+  {
+    "message": "Invalid email or password"
+  }
+  ```
+
+#### Server Error
+- **Status Code**: 500
+- **Body**:
+  ```json
+  {
+    "msg": "Internal Server Error"
+  }
+  ```
+
+# Captain Profile Endpoint
+
+## GET /captain/profile
+
+### Description
+This endpoint is used to get the profile of the logged-in captain.
+
+### Responses
+
+#### Success
+- **Status Code**: 200
+- **Body**:
+  ```json
+  {
+    "Result": {
+      "Captain_Info": {
+        "_id": "captain_id",
+        "fullName": {
+          "firstName": "John",
+          "lastName": "Doe"
+        },
+        "email": "captain@example.com",
+        // ...other captain fields...
+      }
+    },
+    "msg": "Captain Profile fetched successfully",
+    "meta": null
+  }
+  ```
+
+#### Unauthorized
+- **Status Code**: 401
+- **Body**:
+  ```json
+  {
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Server Error
+- **Status Code**: 500
+- **Body**:
+  ```json
+  {
+    "msg": "Internal Server Error"
+  }
+  ```
+
+# Captain Logout Endpoint
+
+## GET /captain/logout
+
+### Description
+This endpoint is used to log out the logged-in captain.
+
+### Responses
+
+#### Success
+- **Status Code**: 200
+- **Body**:
+  ```json
+  {
+    "Result": null,
+    "msg": "Successfully Logged Out",
+    "meta": null
+  }
+  ```
+
+#### Unauthorized
+- **Status Code**: 401
+- **Body**:
+  ```json
+  {
+    "message": "Unauthorized Access"
+  }
+  ```
+
+#### Server Error
+- **Status Code**: 500
+- **Body**:
+  ```json
+  {
+    "msg": "Internal Server Error"
+  }
+  ```
