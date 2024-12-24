@@ -19,7 +19,7 @@ const CaptainLogin = () => {
             <div className='max-w-lg mx-auto'>
                 <img
                     className='w-28 mx-auto mb-6'
-                    src='https://pathao.com/np/wp-content/uploads/sites/7/2023/10/Pathao-Logo_Vertical_with_TagLine.png'
+                    src='https://pathao.com/wp-content/uploads/2018/12/ic_bike_feature_3.png'
                     alt="logo"
                 />
                 <h3 className='text-2xl font-bold text-center text-gray-800 mb-6'>Log In As Captain</h3>
