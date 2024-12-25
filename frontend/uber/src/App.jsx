@@ -10,6 +10,9 @@ import GetStarted from './pages/GetStarted'
 import Home from './pages/Home'
 import UserProtectedWrapper from './pages/UserProtectedWrapper'
 import UserLogout from './pages/UserLogout'
+import CaptainHome from './pages/CaptainHome'
+import CaptainProtectedWrapper from './pages/CaptainProtectedWrapper'
+import CaptainLogout from './pages/CaptainLogout'
 
 const App = () => {
   const ans = useContext(UserDataContext)
@@ -30,6 +33,12 @@ const App = () => {
         <Route path='/logout' element={<UserProtectedWrapper>
           <UserLogout />
         </UserProtectedWrapper>} />
+        <Route path='/captain-home' element={<CaptainProtectedWrapper>
+          <CaptainHome />
+        </CaptainProtectedWrapper>}></Route>
+        <Route path='/captain-logout' element={<CaptainProtectedWrapper>
+          <CaptainLogout />
+        </CaptainProtectedWrapper>} />
         {/* error page(no url) */}
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
