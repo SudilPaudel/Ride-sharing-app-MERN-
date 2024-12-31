@@ -6,6 +6,7 @@ import LocationSearchPannel from '../components/LocationSearchPannel';
 import VehiclePannel from '../components/VehiclePannel';
 import ConfirmedVehicle from '../components/ConfirmedVehicle';
 import LookingForDriver from '../components/LookingForDriver';
+import WaitingForDriver from '../components/WaitingForDriver';
 
 const Home = () => {
   const [pickup, setPickup] = useState('')
@@ -13,9 +14,11 @@ const Home = () => {
   const [pannelOpen, setPannelOpen] = useState(false)
   const pannelRef = useRef(null)
   const pannelCloseRef = useRef(null)
+  const waitingForDriverRef = useRef(null)
   const [vehiclePannelOpen, setVehiclePannelOpen] = useState(false)
   const [confirmedVehiclePannelOpen, setConfirmedVehiclePannelOpen] = useState(false)
   const [lookingForDriverPannelOpen, setLookingForDriverPannelOpen] = useState(false)
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
   const vehiclePannelRef = useRef(null)
   const confirmedVehiclePannelRef = useRef(null)
   const lookingForDriverPannelRef = useRef(null)
@@ -76,12 +79,23 @@ const Home = () => {
       })
     }
   }, [lookingForDriverPannelOpen])
+  useGSAP(function () {
+    if (waitingForDriver) {
+      gsap.to(waitingForDriverRef.current, {
+        transform: 'translateY(0)'
+      })
+    } else {
+      gsap.to(waitingForDriverRef.current, {
+        transform: 'translateY(150%)'
+      })
+    }
+  }, [waitingForDriver])
   return (
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-8 top-7 z-10' src="https://logos-download.com/wp-content/uploads/2021/01/Pathao_Logo.png" alt="logo" />
       <div className='h-screen w-screen'>
         {/* image for temporary use */}
-        <img className='h-full w-full object-cover object-center opacity-80 transi</div>tion-all duration-300 ease-in-out hover:opacity-90' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="map" />
+        <img className='h-full w-full object-cover object-center opacity-80 transition-all duration-300 ease-in-out hover:opacity-90' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="map" />
       </div>
 
       <div className='flex flex-col justify-end absolute top-0 h-screen w-full px-6'>
@@ -127,6 +141,9 @@ const Home = () => {
         </div>
         <div ref={lookingForDriverPannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
           <LookingForDriver setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
+        </div>
+        <div ref={waitingForDriverRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
+          <WaitingForDriver setWaitingForDriver={setWaitingForDriver} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
         </div>
       </div>
     </div>

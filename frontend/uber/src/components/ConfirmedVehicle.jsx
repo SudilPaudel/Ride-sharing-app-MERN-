@@ -38,6 +38,9 @@ const ConfirmedVehicle = (props) => {
           props.setConfirmedVehiclePannelOpen(false)
           props.setVehiclePannelOpen(false)
           }} className='w-full mt-3 bg-green-600 text-white font-semibold p-1.5 border-2 border-green-500 rounded-xl active:border-black '>Confirm</button>
+          <button onClick={()=>{
+          props.setConfirmedVehiclePannelOpen(false)
+          }} className='w-full mt-3 bg-red-600 text-white font-semibold p-1.5 border-2 border-red-500 rounded-xl active:border-black '>Cancel</button>
       </div>
     </div>
   )
