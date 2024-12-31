@@ -5,6 +5,7 @@ import 'remixicon/fonts/remixicon.css'
 import LocationSearchPannel from '../components/LocationSearchPannel';
 import VehiclePannel from '../components/VehiclePannel';
 import ConfirmedVehicle from '../components/ConfirmedVehicle';
+import LookingForDriver from '../components/LookingForDriver';
 
 const Home = () => {
   const [pickup, setPickup] = useState('')
@@ -14,8 +15,10 @@ const Home = () => {
   const pannelCloseRef = useRef(null)
   const [vehiclePannelOpen, setVehiclePannelOpen] = useState(false)
   const [confirmedVehiclePannelOpen, setConfirmedVehiclePannelOpen] = useState(false)
+  const [lookingForDriverPannelOpen, setLookingForDriverPannelOpen] = useState(false)
   const vehiclePannelRef = useRef(null)
   const confirmedVehiclePannelRef = useRef(null)
+  const lookingForDriverPannelRef = useRef(null)
   const submitHandler = (e) => {
     e.preventDefault()
   }
@@ -47,7 +50,7 @@ const Home = () => {
       })
     } else {
       gsap.to(vehiclePannelRef.current, {
-        transform: 'translateY(100%)'
+        transform: 'translateY(130%)'
       })
     }
   }, [vehiclePannelOpen])
@@ -58,13 +61,24 @@ const Home = () => {
       })
     } else {
       gsap.to(confirmedVehiclePannelRef.current, {
-        transform: 'translateY(100%)'
+        transform: 'translateY(150%)'
       })
     }
   }, [confirmedVehiclePannelOpen])
+  useGSAP(function () {
+    if (lookingForDriverPannelOpen) {
+      gsap.to(lookingForDriverPannelRef.current, {
+        transform: 'translateY(0)'
+      })
+    } else {
+      gsap.to(lookingForDriverPannelRef.current, {
+        transform: 'translateY(150%)'
+      })
+    }
+  }, [lookingForDriverPannelOpen])
   return (
     <div className='h-screen relative overflow-hidden'>
-      <img className='w-16 absolute left-5 top-5 z-10' src="https://logos-download.com/wp-content/uploads/2021/01/Pathao_Logo.png" alt="logo" />
+      <img className='w-16 absolute left-8 top-7 z-10' src="https://logos-download.com/wp-content/uploads/2021/01/Pathao_Logo.png" alt="logo" />
       <div className='h-screen w-screen'>
         {/* image for temporary use */}
         <img className='h-full w-full object-cover object-center opacity-80 transi</div>tion-all duration-300 ease-in-out hover:opacity-90' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="map" />
@@ -75,7 +89,7 @@ const Home = () => {
           <h5 ref={pannelCloseRef} onClick={() => { setPannelOpen(false) }} className='absolute opacity-0 right-6 top-6 text-2xl cursor-pointer transition-all duration-300 hover:opacity-100'>
             <i className="ri-arrow-down-wide-line"></i>
           </h5>
-          <h4 className='text-3xl font-semibold text-gray-800 tracking-wide mb-4'>Find a Trip</h4>
+          <h4 className='text-3xl font-semibold text-gray-800 text-center tracking-wide mb-4'>Find a Trip</h4>
           <form onSubmit={(e) => { submitHandler(e) }} className="space-y-4">
             {/* <div className="line absolute h-12 w-1 top-[43%] left-9 bg-gray-800 rounded-full"></div> */}
 
@@ -106,13 +120,13 @@ const Home = () => {
           <LocationSearchPannel setPannelOpen={setPannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
         </div>
         <div ref={vehiclePannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          <VehiclePannel setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setVehiclePannelOpen={setVehiclePannelOpen}/>
+          <VehiclePannel setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
         </div>
         <div ref={confirmedVehiclePannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          <ConfirmedVehicle setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} />
+          <ConfirmedVehicle setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
         </div>
-        <div className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          
+        <div ref={lookingForDriverPannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
+          <LookingForDriver setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
         </div>
       </div>
     </div>

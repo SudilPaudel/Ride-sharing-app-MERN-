@@ -6,7 +6,7 @@ const VehiclePannel = (props) => {
         <h5 className='p-1 text-center absolute top-0 w-[87%]' onClick={()=>{
             props.setVehiclePannelOpen(false)
           }}> <i className="text-3xl ri-arrow-down-wide-line"></i></h5>
-          <h3 className='text-2xl font-semibold mb-3 '>Choose Your Ride</h3>
+          <h3 className='text-2xl font-semibold mb-3 text-center '>Choose Your Ride</h3>
           <div onClick={()=>{props.setConfirmedVehiclePannelOpen(true)}} className='bg-white p-3 rounded-xl border-2 active:border-black mb-2 shadow-md flex items-center justify-between gap-4'>
             <img className='h-12' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1652995234/assets/92/8d4288-e896-4333-9bc2-c60c49f2a095/original/UberXL_Black_v2.png" alt="uber_car" />
             <div className=' w-1/2'>
