@@ -15,11 +15,14 @@ const CaptainProtectedWrapper = ({children}) => {
               navigate('/captain-login')
           }
       }, [token])
-      axios.get(`${import.meta.env.VITE_BASE_URL}/captain/profile`, {
+    
+    axios.get(`${import.meta.env.VITE_BASE_URL}/captain/profile`, {
           headers: {
               Authorization: `Bearer ${token}`
-          }
-      }).then(res => {
+          },
+        
+      }
+    ).then(res => {
          if(res.status === 200) {
             setCaptain(res.data.captain)
             setLoading(false)
