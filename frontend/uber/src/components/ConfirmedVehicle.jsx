@@ -14,22 +14,22 @@ const ConfirmedVehicle = (props) => {
           <div className=' flex items-center justify-center gap-5 mb-3 p-2 border-b-2'>
             <i className="text-lg ri-map-pin-3-fill"></i>
             <div>
-              <h3 className='text-lg font-medium'>Thulo Padhero Marg</h3>
-              <p className='text-sm text-gray-600'>Dhapakhel, Lalitpur</p>
+              {/* <h3 className='text-lg font-medium'>Thulo Padhero Marg</h3> */}
+              <p className='text-sm text-gray-600 text-center'>{props.pickup}</p>
             </div>
           </div>
           <div className=' flex items-center justify-center gap-5 mb-3 p-2 border-b-2'>
             <i className="text-lg ri-map-pin-range-fill"></i>
             <div>
-              <h3 className='text-lg font-medium'>Samaj Dental Hospital</h3>
-              <p className='text-sm text-gray-600'>New Baneshor, Kathmandu</p>
+              {/* <h3 className='text-lg font-medium'>Samaj Dental Hospital</h3> */}
+              <p className='text-sm text-gray-600 text-center'>{props.destination}</p>
             </div>
           </div>
           <div className=' flex items-center justify-center gap-5 mb-3 p-2'>
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className='text-lg font-medium'>रु 193</h3>
-              <p className='text-sm text-gray-600'>Cash Cash</p>
+              <h3 className='text-lg font-medium text-center'>रू{props.fare[props.vehicleType]}</h3>
+              {/* <p className='text-sm text-gray-600'>Cash Cash</p> */}
             </div>
           </div>
         </div>
@@ -37,6 +37,7 @@ const ConfirmedVehicle = (props) => {
           props.setLookingForDriverPannelOpen(true)
           props.setConfirmedVehiclePannelOpen(false)
           props.setVehiclePannelOpen(false)
+          props.createRide()
           }} className='w-full mt-3 bg-green-600 text-white font-semibold p-1.5 border-2 border-green-500 rounded-xl active:border-black '>Confirm</button>
           <button onClick={()=>{
           props.setConfirmedVehiclePannelOpen(false)

@@ -23,6 +23,8 @@ const Home = () => {
   const [pickupSuggestions, setPickupSuggestions] = useState([])
   const [destinationSuggestions, setDestinationSuggestions] = useState([])
   const [activeField, setActiveField] = useState(null)
+  const [fare, setFare] = useState({})
+  const [vehicleType, setVehicleType] = useState(null)
   const vehiclePannelRef = useRef(null)
   const confirmedVehiclePannelRef = useRef(null)
   const lookingForDriverPannelRef = useRef(null)
@@ -114,7 +116,7 @@ const handleDestinationChange = async (e) => {
       })
     } else {
       gsap.to(lookingForDriverPannelRef.current, {
-        transform: 'translateY(150%)'
+        transform: 'translateY(170%)'
       })
     }
   }, [lookingForDriverPannelOpen])
@@ -129,6 +131,29 @@ const handleDestinationChange = async (e) => {
       })
     }
   }, [waitingForDriver])
+  async function findTrip() {
+    setVehiclePannelOpen(true)
+    setPannelOpen(false)
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/get-fare`,{
+      params:{pickup, destination},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    setFare(response.data)
+  }
+  async function createRide() {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/ride/create`,{
+      pickup,
+      destination,
+      vehicleType,
+    },{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    console.log(response.data)
+  }
   return (
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-8 top-7 z-10' src="https://logos-download.com/wp-content/uploads/2021/01/Pathao_Logo.png" alt="logo" />
@@ -170,10 +195,11 @@ const handleDestinationChange = async (e) => {
               placeholder='Enter your destination'
             />
           </form>
+          <button onClick={findTrip} className='bg-black text-white px-3 py-1 w-full rounded-lg mt-2'>Find Trip</button>
         </div>
 
         {/* Location Search Panel with Animation */}
-        <div ref={pannelRef} className='bg-white bg-opacity-90 h-0 transition-all duration-500 ease-in-out transform origin-top rounded-b-3xl'>
+        <div ref={pannelRef} className='bg-white bg-opacity-90 h-0 transition-all duration-500 ease-in-out  origin-top rounded-b-3xl'>
           <LocationSearchPannel 
           suggestions={activeField === 'pickup' ? pickupSuggestions : destinationSuggestions}
           setPanelOpen={setPannelOpen}
@@ -184,13 +210,13 @@ const handleDestinationChange = async (e) => {
           />
         </div>
         <div ref={vehiclePannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          <VehiclePannel setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
+          <VehiclePannel setVehicleType={setVehicleType} fare={fare} setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
         </div>
         <div ref={confirmedVehiclePannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          <ConfirmedVehicle setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
+          <ConfirmedVehicle vehicleType={vehicleType} pickup={pickup} destination={destination} fare={fare} createRide={createRide} setConfirmedVehiclePannelOpen={setConfirmedVehiclePannelOpen} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} setVehiclePannelOpen={setVehiclePannelOpen} />
         </div>
         <div ref={lookingForDriverPannelRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          <LookingForDriver setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
+          <LookingForDriver pickup={pickup} destination={destination} vehicleType={vehicleType} fare={fare} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
         </div>
         <div ref={waitingForDriverRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
           <WaitingForDriver setWaitingForDriver={setWaitingForDriver} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
