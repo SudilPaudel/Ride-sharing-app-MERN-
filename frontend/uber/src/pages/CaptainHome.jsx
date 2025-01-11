@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CaptainDetails from '../components/CaptainDetails'
 import RidePopup from '../components/RidePopup'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
 import ConfirmRidePopup from '../components/ConfirmRidePopup'
+import { SocketContext } from '../context/SocketContext'
+import { CaptainDataContext } from '../context/CaptainContext'
 
 const CaptainHome = () => {
   const [ridePopupOpen, setRidePopupOpen] = useState(true)
@@ -34,6 +36,35 @@ const CaptainHome = () => {
     }
   }, [confirmRidePopupOpen])
 
+  const { socket } = useContext(SocketContext)
+  const { captain } = useContext(CaptainDataContext)
+  useEffect(() => {
+    socket.emit('join', { userId: captain._id, userType: 'captain' })
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          
+          socket.emit('update-location-captain', {
+            userId: captain._id,
+            location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+          })
+        })
+      }
+    }
+
+    const locationInterval = setInterval(updateLocation, 10000)
+    updateLocation()
+
+
+  }, [])
+
+  socket.on('new-ride', (data)=>{
+    console.log(data)
+  })
+
   return (
     <div className='h-screen'>
       <div className='fixed p-6 top-0 flex items-center justify-between w-full'>
@@ -49,10 +80,10 @@ const CaptainHome = () => {
         <CaptainDetails />
       </div>
       <div ref={ridePopoupRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9 translate-y-full left-5  border-1 rounded-2xl shadow-md '>
-        <RidePopup setRidePopupOpen={setRidePopupOpen} setConfirmRidePopupOpen={setConfirmRidePopupOpen}/>
+        <RidePopup setRidePopupOpen={setRidePopupOpen} setConfirmRidePopupOpen={setConfirmRidePopupOpen} />
       </div>
       <div ref={confirmRidePopupRef} className='fixed bg-white h-screen mr-6 z-10 bottom-0 p-5 translate-y-full left-9  border-1 rounded-2xl shadow-md '>
-        <ConfirmRidePopup setConfirmRidePopupOpen={setConfirmRidePopupOpen}  />
+        <ConfirmRidePopup setConfirmRidePopupOpen={setConfirmRidePopupOpen} />
       </div>
     </div>
   )

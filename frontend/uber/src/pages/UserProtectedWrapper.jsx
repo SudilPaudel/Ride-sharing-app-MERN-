@@ -13,7 +13,7 @@ const UserProtectedWrapper = ({children}) => {
         if (!token) {
             navigate('/login')
         }
-    }, [token])
+    
 
         axios.get(`${import.meta.env.VITE_BASE_URL}/user/profile`, {
             headers: {
@@ -21,7 +21,7 @@ const UserProtectedWrapper = ({children}) => {
             }
         }).then(res => {
             if(res.status === 200) {
-               setUser(res.data.user)
+               setUser(res.data)
                 setLoading(false)
             }
         }
@@ -31,7 +31,7 @@ const UserProtectedWrapper = ({children}) => {
             navigate('/login')
         }
         )
-    
+    }, [token])
     if(loading) {
         return (
             <div>Loading...</div>

@@ -14,7 +14,7 @@ const CaptainProtectedWrapper = ({children}) => {
           if (!token) {
               navigate('/captain-login')
           }
-      }, [token])
+   
     
     axios.get(`${import.meta.env.VITE_BASE_URL}/captain/profile`, {
           headers: {
@@ -34,6 +34,7 @@ const CaptainProtectedWrapper = ({children}) => {
           navigate('/captain-login')
       }
       )
+    }, [token])
       if(loading) {
           return (
               <div>Loading...</div>

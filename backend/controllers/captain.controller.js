@@ -1,4 +1,4 @@
-const captainModel = require("../models/captain.models")
+const captainModel = require("../models/captain.model")
 const blacklistTokenModel = require("../models/blacklist-token.model")
 const { validationResult } = require("express-validator")
 const captainService = require("../services/captain.services")
@@ -32,14 +32,7 @@ module.exports.registerCaptain = async (req, res, next) => {
         });
 
         const token = captain.generateAuthToken()
-        res.status(201).json({
-            Result: {
-                Captain_Info: captain,
-                token: token
-            },
-            msg: "Successfully Registered Captain",
-            meta: null
-        })
+        res.status(201).json({token, captain})
     }catch(exception){
         throw exception
     }
@@ -62,19 +55,14 @@ module.exports.loginCaptain = async (req, res, next) => {
         }
         const isPasswordValid = await captain.comparePassword(password, captain.password)
         if(!isPasswordValid){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Invalid Password"
             })
         }
         const token = captain.generateAuthToken()
         res.cookie("token", token)
         res.status(200).json({
-            Result: {
-                Captain_Info: captain,
-                token: token
-            },
-            msg: "Successfully Logged In",
-            meta: null
+        token, captain
         })
     }catch(exception){
         throw exception
@@ -84,11 +72,7 @@ module.exports.loginCaptain = async (req, res, next) => {
 module.exports.getCaptainProfile = async (req, res, next) => {
     try{
         res.status(200).json({
-            Result: {
-                Captain_Info: req.captain
-            },
-            msg: "Captain Profile fetched successfully",
-            meta: null
+            captain: req.captain
         })
     }catch(exception){
         throw exception

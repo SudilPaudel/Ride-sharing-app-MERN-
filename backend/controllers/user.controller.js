@@ -30,16 +30,7 @@ module.exports.registerUser = async (req, res, next) => {
         })
 
         const token = user.generateAuthToken();
-        res.status(201).json({
-            Result: {
-                User_Info: user,
-                token: token
-            },
-            msg: "Successfully Registered User",
-            meta: null
-
-
-        })
+        res.status(201).json({token, user})
     } catch (exception) {
         throw exception
     }
@@ -73,24 +64,13 @@ module.exports.loginUser = async (req, res, next) => {
         res.cookie('token', token);
 
         res.status(200).json({
-            Result: {
-                User_Info: user,
-                token: token
-            },
-            msg: "Successfully Logged In",
-            meta: null
+            token, user
         })
     
 }
 module.exports.getUserProfile = async (req, res, next) => {
     try {
-     res.status(200).json({
-         Result: {
-             User_Info: req.user
-         },
-         msg: "Your Profile",
-         meta: null
-     })
+     res.status(200).json(req.user)
     }
     catch (exception) {
         throw exception

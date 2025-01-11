@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap';
 import axios from 'axios'
@@ -8,7 +8,9 @@ import VehiclePannel from '../components/VehiclePannel';
 import ConfirmedVehicle from '../components/ConfirmedVehicle';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
+import { SocketContext } from '../context/SocketContext';
 
+import { UserDataContext } from '../context/userContext';
 const Home = () => {
   const [pickup, setPickup] = useState('')
   const [destination, setDestination] = useState('')
@@ -29,6 +31,12 @@ const Home = () => {
   const confirmedVehiclePannelRef = useRef(null)
   const lookingForDriverPannelRef = useRef(null)
 
+  const {socket} = useContext(SocketContext)
+  const {user} = useContext(UserDataContext)
+  
+  useEffect(()=>{
+    socket.emit("join", { userType: "user", userId: user._id })
+  }, [user])
 
   const handlePickupChange = async (e) => {
     console.log(pickup)

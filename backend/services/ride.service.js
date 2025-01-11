@@ -1,4 +1,4 @@
-const { Error } = require('mongoose');
+
 const crypto = require('crypto')
 const rideModel = require('../models/ride.model')
 const mapsService = require('./maps.service')

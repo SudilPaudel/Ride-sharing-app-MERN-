@@ -6,6 +6,7 @@ export const CaptainDataContext = createContext();
 
  const CaptainContext = ({ children }) => {
     const [captain, setCaptain] = useState(null);
+    
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     

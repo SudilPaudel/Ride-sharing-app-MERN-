@@ -21,7 +21,7 @@ const UserLogin = () => {
             const data = response.data
             setUser(data.user)
             console.log(data)
-            localStorage.setItem('token', data.Result.token)
+            localStorage.setItem('token', data.token)
             navigate('/home')
         }
         setEmail('')
