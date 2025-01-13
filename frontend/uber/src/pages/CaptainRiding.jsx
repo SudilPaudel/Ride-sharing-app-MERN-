@@ -1,12 +1,16 @@
 import { useGSAP } from '@gsap/react'
 import React, { useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import FinishRide from './FinishRide'
+import LiveTracking from '../components/LiveTracking'
 
 const CaptainRiding = (props) => {
+const location = useLocation()
 const [finishRideOpen, setFinishRideOpen] = useState(false)
 const FinishRideRef = useRef(null)
+const rideData = location.state?.ride
+
     useGSAP(function () {
         if (finishRideOpen) {
             gsap.to(FinishRideRef.current, {
@@ -30,7 +34,7 @@ const FinishRideRef = useRef(null)
                 </div>
                 <div className='h-4/5'>
 
-                    <img className='h-full w-full object-cover object-center' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="map" />
+                    <LiveTracking />
                 </div>
                 <div className='h-1/5 p-3 border-t-2 flex items-center justify-between relative gap-3 bg-yellow-400 border-gray-300 rounded-t-3xl shadow-xl' >
                     <h5 className='p-1 text-center absolute top-0 w-[97%]' onClick={() => {
@@ -42,7 +46,7 @@ const FinishRideRef = useRef(null)
                     }}>Comlplete this Ride</button>
                 </div>
                 <div ref={FinishRideRef} className='fixed bg-white w-full z-10 bottom-0 px-3 py-10 pt-12 translate-y-full   border-1 rounded-t-2xl shadow-md '>
-                    <FinishRide setFinishRideOpen={setFinishRideOpen} />
+                    <FinishRide ride={rideData} setFinishRideOpen={setFinishRideOpen} />
                 </div>
 
             </div>

@@ -11,7 +11,7 @@ const RidePopup = (props) => {
       <div className='flex items-center p-3 bg-yellow-400 rounded-lg justify-between mt-4'>
         <div className='flex items-center gap-1 '>
         <img className='h-10 w-10 rounded-full object-cover' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5feh6-WBnJMJzunv-DXyYf3BUFU5Yexv08g&s" alt="user_image" />
-        <h2 className='text-lg font-medium'>Sudil Paudel</h2>
+        <h2 className='text-lg font-medium'>{props.ride?.user.fullName.firstName + " " + props.ride?.user.fullName.lastName }</h2>
         </div>
         <h5 className='text-lg font-semibold'>2.2 km</h5>
       </div>
@@ -21,21 +21,21 @@ const RidePopup = (props) => {
           <div className=' flex items-center justify-center gap-5 mb-3 p-2 border-b-2'>
             <i className="text-lg ri-map-pin-3-fill"></i>
             <div>
-              <h3 className='text-lg font-medium'>Thulo Padhero Marg</h3>
-              <p className='text-sm text-gray-600'>Dhapakhel, Lalitpur</p>
+              <h3 className='text-lg font-medium'>{props.ride?.pickup}</h3>
+              <p className='text-sm text-gray-600'></p>
             </div>
           </div>
           <div className=' flex items-center justify-center gap-5 mb-3 p-2 border-b-2'>
             <i className="text-lg ri-map-pin-range-fill"></i>
             <div>
-              <h3 className='text-lg font-medium'>Samaj Dental Hospital</h3>
-              <p className='text-sm text-gray-600'>New Baneshor, Kathmandu</p>
+              <h3 className='text-lg font-medium'>{props.ride?.destination}</h3>
+              <p className='text-sm text-gray-600'></p>
             </div>
           </div>
           <div className=' flex items-center justify-center gap-5 mb-3 p-2'>
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className='text-lg font-medium'>रु 193</h3>
+              <h3 className='text-lg font-medium'>रु{props.ride?.fare}</h3>
               <p className='text-sm text-gray-600'>Cash Cash</p>
             </div>
           </div>
@@ -44,6 +44,7 @@ const RidePopup = (props) => {
         <button onClick={()=>{
           props.setConfirmRidePopupOpen(true)
           props.setRidePopupOpen(false)
+          props.confirmRide()
           }} className='w-full mt-3 bg-green-600 text-white font-semibold p-3 px-8 border-2 border-green-500 rounded-xl active:border-black '>Accept</button>
           <button onClick={()=>{
           props.setRidePopupOpen(false)

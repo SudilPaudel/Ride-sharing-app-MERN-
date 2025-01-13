@@ -11,6 +11,8 @@ import WaitingForDriver from '../components/WaitingForDriver';
 import { SocketContext } from '../context/SocketContext';
 
 import { UserDataContext } from '../context/userContext';
+import { useNavigate } from 'react-router-dom';
+import LiveTracking from '../components/LiveTracking';
 const Home = () => {
   const [pickup, setPickup] = useState('')
   const [destination, setDestination] = useState('')
@@ -26,6 +28,7 @@ const Home = () => {
   const [destinationSuggestions, setDestinationSuggestions] = useState([])
   const [activeField, setActiveField] = useState(null)
   const [fare, setFare] = useState({})
+  const [ride, setRide] = useState(null)
   const [vehicleType, setVehicleType] = useState(null)
   const vehiclePannelRef = useRef(null)
   const confirmedVehiclePannelRef = useRef(null)
@@ -33,10 +36,21 @@ const Home = () => {
 
   const {socket} = useContext(SocketContext)
   const {user} = useContext(UserDataContext)
-  
+  const navigate = useNavigate()
   useEffect(()=>{
     socket.emit("join", { userType: "user", userId: user._id })
   }, [user])
+  socket.on('ride-confirmed', ride=>{
+    setWaitingForDriver(true)
+    setLookingForDriverPannelOpen(false)
+    setRide(ride)
+
+
+  })
+  socket.on('ride-started', ride=>{
+    setWaitingForDriver(false)
+    navigate('/riding', {state: {ride}})
+  })
 
   const handlePickupChange = async (e) => {
     console.log(pickup)
@@ -167,7 +181,7 @@ const handleDestinationChange = async (e) => {
       <img className='w-16 absolute left-8 top-7 z-10' src="https://logos-download.com/wp-content/uploads/2021/01/Pathao_Logo.png" alt="logo" />
       <div className='h-screen w-screen'>
         {/* image for temporary use */}
-        <img className='h-full w-full object-cover object-center opacity-80 transition-all duration-300 ease-in-out hover:opacity-90' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="map" />
+      <LiveTracking />
       </div>
 
       <div className='flex flex-col justify-end absolute top-0 h-screen w-full px-6'>
@@ -227,7 +241,7 @@ const handleDestinationChange = async (e) => {
           <LookingForDriver pickup={pickup} destination={destination} vehicleType={vehicleType} fare={fare} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
         </div>
         <div ref={waitingForDriverRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9  translate-y-full border-1 rounded-2xl shadow-md '>
-          <WaitingForDriver setWaitingForDriver={setWaitingForDriver} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
+          <WaitingForDriver ride={ride} setWaitingForDriver={setWaitingForDriver} setLookingForDriverPannelOpen={setLookingForDriverPannelOpen} />
         </div>
       </div>
     </div>

@@ -7,10 +7,13 @@ import gsap from 'gsap';
 import ConfirmRidePopup from '../components/ConfirmRidePopup'
 import { SocketContext } from '../context/SocketContext'
 import { CaptainDataContext } from '../context/CaptainContext'
+import axios from 'axios'
+import LiveTracking from '../components/LiveTracking'
 
 const CaptainHome = () => {
-  const [ridePopupOpen, setRidePopupOpen] = useState(true)
+  const [ridePopupOpen, setRidePopupOpen] = useState(false)
   const [confirmRidePopupOpen, setConfirmRidePopupOpen] = useState(false)
+  const [ride, setRide]= useState(null)
   const ridePopoupRef = useRef(null)
   const confirmRidePopupRef = useRef(null)
   useGSAP(function () {
@@ -60,9 +63,25 @@ const CaptainHome = () => {
 
 
   }, [])
+  async function confirmRide() {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/ride/confirm`,{
+      rideId: ride._id,
+      captainId: captain._id,
+
+      
+    },{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+    })
+    setRidePopupOpen()
+
+  }
 
   socket.on('new-ride', (data)=>{
     console.log(data)
+    setRide(data)
+    setRidePopupOpen(true)
   })
 
   return (
@@ -74,16 +93,25 @@ const CaptainHome = () => {
         </Link>
       </div>
       <div className='h-3/5'>
-        <img className='h-full w-full object-cover object-center' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="map" />
+        <LiveTracking />
       </div>
       <div className='h-2/5 p-6 border-t-2 border-gray-300 bg-white rounded-t-3xl shadow-xl'>
         <CaptainDetails />
       </div>
       <div ref={ridePopoupRef} className='fixed bg-white mr-6 z-10 bottom-0 p-9 translate-y-full left-5  border-1 rounded-2xl shadow-md '>
-        <RidePopup setRidePopupOpen={setRidePopupOpen} setConfirmRidePopupOpen={setConfirmRidePopupOpen} />
+        <RidePopup 
+          ride={ride}
+          setRidePopupOpen={setRidePopupOpen} 
+          setConfirmRidePopupOpen={setConfirmRidePopupOpen} 
+          confirmRide= {confirmRide}
+        />
       </div>
       <div ref={confirmRidePopupRef} className='fixed bg-white h-screen mr-6 z-10 bottom-0 p-5 translate-y-full left-9  border-1 rounded-2xl shadow-md '>
-        <ConfirmRidePopup setConfirmRidePopupOpen={setConfirmRidePopupOpen} />
+        <ConfirmRidePopup 
+        ride={ride}
+        setRidePopupOpen={setRidePopupOpen}
+        setConfirmRidePopupOpen={setConfirmRidePopupOpen} 
+        />
       </div>
     </div>
   )

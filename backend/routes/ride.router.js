@@ -16,6 +16,24 @@ router.post('/create',
 router.get('/get-fare',authMiddleware.authUser, 
     query('pickup').isString().isLength({min: 3}).withMessage("Invalid pickup location"),
     query('destination').isString().isLength({min: 3}).withMessage("Invalid Destination location"),
-    rideController.getFare)
+    rideController.getFare
+)
+router.post('/confirm', 
+    authMiddleware.authCaptain,
+    body('rideId').isMongoId().withMessage('Inavalid Ride ID'),
+    rideController.confirmRide
+
+)
+router.get('/start-ride', 
+    authMiddleware.authCaptain,
+    query('rideId').isMongoId().withMessage("Invalid Ride Id"),
+    query('otp').isString().isLength({min:6 , max:6}).withMessage("Invalid otp"),
+    rideController.startRide
+
+)
+
+router.post('/end-ride', authMiddleware.authCaptain, body('rideId').isMongoId().withMessage("Invalid Ride ID"), rideController.endRide)
+
+
 
 module.exports = router
