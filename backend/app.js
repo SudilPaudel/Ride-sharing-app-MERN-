@@ -10,6 +10,7 @@ const captainRoutes = require("./routes/captain.router")
 const mapsRoutes = require("./routes/maps.routes")
 const rideRoutes = require('./routes/ride.router')
 connectToDb()
+// completed
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded(
